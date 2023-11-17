@@ -1,10 +1,21 @@
 import { useState } from "react"
 import { BsThreeDots } from "react-icons/bs"
 import { useDispatch } from "react-redux"
+import { deleteDataFunc } from "../redux/dataSlice"
+import { modalFunc } from "../redux/modalSlice"
+import { useNavigate } from "react-router-dom"
 
 const ProductCard = ({ dt }) => {
   const [openEdit, setOpenEdit] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const updateFunc = () => {
+    dispatch(modalFunc())
+    setOpenEdit(false)
+    navigate(`/?update=${dt?.id}`)
+    
+  }
 
   return (
     <div className="w-[200px] h-[200px] relative m-2 rounded-md">
@@ -21,8 +32,8 @@ const ProductCard = ({ dt }) => {
       {
         openEdit && (
           <div className="bg-black border border-white text-white absolute top-5 right-2 p-2 text-sm">
-            <div className="cursor-pointer">Sil</div>
-            <div className="cursor-pointer">Update</div>
+            <div onClick={() => dispatch(deleteDataFunc(dt?.id))} className="cursor-pointer">Sil</div>
+            <div onClick={updateFunc} className="cursor-pointer">Update</div>
           </div>
         )
       }
